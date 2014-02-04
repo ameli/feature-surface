@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Feature-surface by ameli</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Feature-surface</h1>
+        <h2>Detect featured surfaces of unstructured meshed.</h2>
+        <a href="https://github.com/ameli/feature-surface" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="introduction" class="anchor" href="#introduction"><span class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>This package has been created to automatically identify inlet and outlet of meshes. Such inlet/outlet are geometrically distinguished from other boundary surfaces. Specifically, they are encircled by a closed curve that has sharper normal change and inside area of the curve has more flattened surface. We call these boundaries <em>Feature Surfaces</em>. An example is both ends of a cylinder. Each end is a flat surface that is engulfed with a circle. The two end circles on a cylinder mesh have sharper normal vector change across their points. Figure <a href="#figAAAexample">1</a> shows detection of two featured surfaces on a mesh model.</p>
+
+<p>The <em>Feature Surface</em> can be used either as a a plugin for ParaView, a filter in a VTK code or as a standalone application. The program accepts various cell types. Multiple file formats are supported as well. Common file formats are legacy <code>*.vtk</code> and binary <code>*.vtu</code> extensions.</p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/AAA-4.png" alt="An example of two separated featured surface detection on AAA mesh." title="An example of two separated featured surface detection on AAA mesh."><a name="figAAAexample"></a></p>
+
+<h1>
+<a name="build-source" class="anchor" href="#build-source"><span class="octicon octicon-link"></span></a>Build Source</h1>
+
+<p>User can build the code from source. You can obtain the source code from <a href="https://github.com/ameli/feature-surface">github repository</a>. Please install <code>git</code> package:</p>
+
+<pre><code>$ sudo apt-get install git
+</code></pre>
+
+<p>Then, create a build directory and download the source code inside the build directory:</p>
+
+<pre><code>$ mkdir /tmp/FeatureSurface
+$ cd /tmp/FeatureSurface
+$ git clone git://github.com/ameli/feature-surface
+</code></pre>
+
+<p>Now, build the code:</p>
+
+<pre><code>$ cmake .
+$ make
+$ sudo make install
+$ cd ..
+$ rm -r /tmp/feature-surface
+</code></pre>
+
+<p>Installation is system-wide for all users.</p>
+
+<h1>
+<a name="program-usage" class="anchor" href="#program-usage"><span class="octicon octicon-link"></span></a>Program Usage</h1>
+
+<p>You can use the program either in terminal or as a ParaView plugin. Here are examples to use it in terminal:</p>
+
+<pre><code>$ featuresurface /input-path/inputfile.vtk outputfile.vtk
+</code></pre>
+
+<p>For help, use <code>-h</code>, for get program information use <code>-i</code> and for see the license, use <code>-l</code> options.</p>
+
+<pre><code>$ featuresurface -h
+$ featuresurface -i
+$ featuresurface -l
+</code></pre>
+
+<h1>
+<a name="paraview-plugin-usage" class="anchor" href="#paraview-plugin-usage"><span class="octicon octicon-link"></span></a>ParaView Plugin Usage</h1>
+
+<p><a name="secParaview"></a></p>
+
+<p>After loading the plugin in ParaView, you can use the filter in <code>Filter</code> menu under <code>Extensions</code>. Figures <a href="#figParaview">2</a> shows how to apply the plugin inside ParaView. </p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/Paraview.png" alt="Using the plugin in ParaView" title="Using the plugin in ParaView"><a name="figParaview"></a></p>
+
+<p>Figure <a href="#figoptions">3</a> illustrated the options that can be set in ParaView for this filter. Filter has the following options:</p>
+
+<ul>
+<li><p><strong>Feature angle</strong> is the threshold angle degree for which the edges are detected. Smaller feature angle is less restrictive.</p></li>
+<li>
+<p><strong>Surface color</strong> can be one of the followings:</p>
+
+<ul>
+<li>
+<em>Body color</em>: Assigns the color <em>0</em> to all featured surface points. This is the same color as body.</li>
+<li>
+<em>Mono color</em>: Assigns color <em>1</em> for all features surface points.</li>
+<li>
+<em>Poly color</em>: For each group of points in a features surface area, it assigns an integer, starting from <em>1</em>. Thus the <em>n</em>-th features surface has the color <em>n</em>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Edge color</strong> can be one of the followings:</p>
+
+<ul>
+<li>
+<em>Body color</em>: Assigns the color <em>0</em> to all edge points. This is the same color as body.</li>
+<li>
+<em>Mono color</em>: Assigns color <em>1</em> for all edge points.</li>
+<li>
+<em>Surface color</em>: Assigns the color of the surface that the edge is belonging to.</li>
+<li>
+<em>Opposite Surface color</em>: Assigns opposite of the color of surface that edge is belonging to. For instants, if the surface has color <em>n</em>, then its edge has color <em>-n</em>.</li>
+</ul>
+</li>
+</ul><p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/options.jpg" alt="Left: Options for surface color mode. Right: Options for Edge color mode." title="Left: Options for surface color mode. Right: Options for Edge color mode."><a name="figoptions"></a></p>
+
+<h1>
+<a name="robustness-of-algorithm" class="anchor" href="#robustness-of-algorithm"><span class="octicon octicon-link"></span></a>Robustness of Algorithm</h1>
+
+<p>The algorithm that is used for this filter is robust in variety of ways. Such robustness was gained by both <em>geometrical</em> and <em>topological</em> checks on edge extraction. The following are a brief description.</p>
+
+<h2>
+<a name="geometrical-checks" class="anchor" href="#geometrical-checks"><span class="octicon octicon-link"></span></a>Geometrical Checks</h2>
+
+<p>First, the algorithm is not sensitive on <em>Edge Angle</em>. Majority of function were used to eliminate this dependency, so a broad range of edge angle can lead to reasonable edge detection. Figure <a href="#figgeometricalcheck">4</a> shows two violations of edge angles in critical situations. In the left highlighted spot, edge angle is small, and an rudimentary search might not detect the edge and featured surface at all. User might lower the edge angle threshold in settings, but it comes with the cost of detecting some edges that are not belong to an interesting featured surface. For instance, the right highlighted spot has a large edge angle but it is not considered as inlet or outlet. However a simple algorithm might detect the edge and try to extract a spurious feature surface. By using a geometrical checks we eliminate such spurious edges.</p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/AAA-5-1.jpg" alt="Left and right spotlights are two angles that violates with edge angle threshold." title="Left and right spotlights are two angles that violates with edge angle threshold."><a name="figgeometricalcheck"></a></p>
+
+<h2>
+<a name="topological-checks" class="anchor" href="#topological-checks"><span class="octicon octicon-link"></span></a>Topological Checks</h2>
+
+<p>A more basic issue with edge extraction is the topology of edge itself. Some edges are not closed curve, some are having more than two connectivities at each points, or multiple closed curves are sharing a set of common points. Few of these unusual edges are not accepted as an edge for a featured surface, and some needs trimming of excessive points. Since excessive points are not known priori, all possible routes on the edges should be checked for finding a <em>nice curve</em> that can be a candidate for a featured surface. Figure <a href="#figspuriousedge">5</a> illustrate such spurious edges that should take out of results. <a href="#listoutputprogramaortic">This listing</a> is the program output applied on data in figure <a>5</a>.</p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/AAA-6-1.jpg" alt="An example of spurious edge that does not construct a featured surface." title="An example of spurious edge that does not construct a featured surface."><a name="figspuriousedge"></a></p>
+
+<p>Output of program <a name="list:output-program-aortic"></a>
+    $ ./FeatureSurface </p>
+
+<pre><code>Closed polygon found. Number of points: 21
+Closed polygon found. Number of points: 48
+Closed polygon found. Number of points: 60
+Closed polygon found. Number of points: 118
+Closed polygon found. Number of points: 37
+Closed polygon found. Number of points: 18
+
+Fatal Point: 19, Number of connectivities: 3
+Fatal Point: 19, Number of connectivities: 3
+Fatal Point: 33, Number of connectivities: 3
+Fatal Point: 32, Number of connectivities: 1
+Fatal Point: 39, Number of connectivities: 1
+Fatal Point: 64, Number of connectivities: 1
+Total number of closed polygons: 6
+
+Closed Edge: 1,  Surface points found: 39
+Closed Edge: 2,  Surface points found: 206
+Closed Edge: 3,  Surface points found: 315
+Closed Edge: 4,  Surface points found: 1270
+Closed Edge: 5,  Surface points found: 120
+Closed Edge: 6,  Surface points found: 23
+</code></pre>
+
+<h2>
+<a name="orientating-edges" class="anchor" href="#orientating-edges"><span class="octicon octicon-link"></span></a>Orientating Edges</h2>
+
+<p>An important issue after extracting a candidate edge curve is to find an appropriate orientation on edge; that is, finding which side is interior or exterior of the closed curve. Topologically, both sides ca be interior since a smooth homotopy can make both side identical. Rather using topologically distinct sides, we use geometrically distinct regions. We define an interior side where the surface is tend to be more flattened. This assumption is natural in inlet and outlets of computational meshes. The algorithm that is used in the filter can decide which surface to be interior.</p>
+
+<p>However, in rare cases, due to incorrect meshing or unusual cases the interior and exterior surfaces of an edge can be related with a path other than the edge itself. The current code can identify such cases and avoid colorizing the while domain. This feature makes the algorithm very robust in colorizing domains correctly.</p>
+
+<h1>
+<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h1>
+
+<p>The filter's performance has been tested on two mesh models on both Linux and Mac OS X operating systems using both command line and ParaView plugin. Figure <a href="#figAAAmesh">6</a> shows the application of filter on AAA mesh model. The mesh has 11 inlet and outlets that all of them has been detected by the filter. With no surprise, the performance was not sensitive to selecting the Edge angle, thus all features identified without including any noisy edge or non-interesting edges. Figure <a href="#figAorticmesh">7</a> illustrates the application of the filter on Aortic mesh model, which all 6 inlet or outlets were detected. Since the algorithm <em>re-uses</em> all of its computed data during process at each iterative search on edges, the algorithm is fast. It takes only 4 or 5 seconds for a million element Aortic mesh to finish the computation.</p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/AAA-mesh.jpg" alt="AAA mesh with 11 featured surface detected." title="AAA mesh with 11 featured surface detected."><a name="figAAAmesh"></a></p>
+
+<p>As described in <a href="#secParaview">this section</a>, the plugin has options to colorize the edges and/or surfaces in multiple ways. Edges and their corresponding surfaces can be colorized with the same color, body color or independently.</p>
+
+<p><img src="https://raw.github.com/ameli/feature-surface/master/doc/figures/Aortic-mesh.jpg" alt="Aortic mesh with 6 featured surface detected." title="Aortic mesh with 6 featured surface detected."><a name="fig:Aortic-mesh"></a></p>
+
+<h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>Copyright 2013 Siavash Ameli</p>
+
+<p>This source code is provided <em>as-is</em>, without any express or implied warranty. In no event will the author be held liable for any damages arising from the use of this software.</p>
+
+<p>Permission is granted to anyone to use this software for non commercial purpose, to alter it and redistribute it freely, subject to the following restrictions:</p>
+
+<ul>
+<li><p>The origin of this source code must not be misrepresented; you must not claim that you wrote the original source code. </p></li>
+<li><p>You may modify or alter the source code at your own risk, provided that such modifications are extensively commented. Altered source versions must not be misrepresented as being the original source code.</p></li>
+<li><p>Source code may not be redistributed in any way. You may distribute the target binary for non-commercial purposes.</p></li>
+<li><p>If you use this source code in a non-commercial product, an acknowledgment in the product documentation would be appreciated.</p></li>
+<li><p>This notice may not be removed or altered from any source distribution.</p></li>
+</ul><h1>
+<a name="bug-report" class="anchor" href="#bug-report"><span class="octicon octicon-link"></span></a>Bug Report</h1>
+
+<p>Any bug reports and comments are appreciated. You may report bugs in <a href="https://github.com/ameli/feature-surface">github</a>, <a href="https://bugs.launchpad.net/%7Eameli">Launchpad</a> or send email.</p>
+
+<h1>
+<a name="acknowledgement" class="anchor" href="#acknowledgement"><span class="octicon octicon-link"></span></a>Acknowledgement</h1>
+
+<p>This work was supported by the National Science Foundation, award number 1047963.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/ameli/feature-surface/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/ameli/feature-surface/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/ameli/feature-surface"></a> is maintained by <a href="https://github.com/ameli">ameli</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
