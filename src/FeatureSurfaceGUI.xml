@@ -1,0 +1,23 @@
+<!--
+ * =====================================================================================
+ *
+ *       Filename:  FeatureSurfaceGUI.xml
+ *
+ *    Description:  Extract Topologically distinct surfaces form data set
+ *
+ *        Version:  1.0
+ *        Created:  12/14/2013 09:44:25 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Siavash Ameli
+ *   Organization:  University of California, Berkeley
+ *
+ * =====================================================================================
+ -->
+
+<ParaViewFilters>
+    <Category name="Extensions" menu_label="&amp;Extensions">
+        <Filter name="FeatureSurface"/>
+    </Category>
+</ParaViewFilters>
