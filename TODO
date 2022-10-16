@@ -1,0 +1,57 @@
+====
+TODO
+====
+
+- I added Lines cell in SeparatedEdges. In Paraview it will be shown as well as polygons. We can remove redundant points (those where not belonging to polygons) by PolyData::DeletePoint().
+
+- these functions are no longer needed:
+  IdConverter
+  FindOriginalPointId
+
+- This function has been written just for test:
+  OriginalIdTest
+  and used in line 164 and 165.
+  After finishing the work, I should remove this function.
+
+- In function FindClosedPolygon, inside the while loop, and inside the first if condition, I commented this line:
+  // PointsProcessed[NextAdjacentPointId] = true;
+  Because if gives segfault. 
+
+- In FindClosedEdgeSurface, we declared PointsProcessed. This is initialized with "true" values for edge points. However, this is initialized ONLY for "ClosedEdge" points, not ALL edge points. So, as re result, in marching, it only scences ONE edge as processed, on all edges.
+Solution: Move the PointsProcessed variable into the upper function (FindSeparatedEdges), and initialized it at that function for ALL separated edge points (not just one ClosedEdge), then pass PointsProcessed into FindClosedEdgeSurface
+  This is more robust.
+
+- The enum class problem:
+  We have 2 enums in the FeatureSurface.h file, which are: SurfaceColorModeType and EdgeColorModeType.
+  In each of these enums, we have similar fields, which are BODY_COLOR, MONO_COLOR, etc.
+  These similar fileds in two differnet enums cause "CONFLICT". 
+  The solution is to use "STRONGLY TYPED ENUMS", which are "enum class". They are available in C++11.
+  I have added -std=c++0x in CMAKE_CXX_FLAGS in the CMakeLists.txt. Also my compiler is g++ 4.4.7, which supports strongly typed enums.
+  
+  Problem: I get syntax error for enum class.
+  Where problem comes from: it's in CMakeLists, at line where it is: ADD_PARAVIEW_PLUGIN(...)
+  If I disable compiling for plugin, then enum class will compile fine.
+
+  What I have done now: I replaced the enum class with a class that enum is inside it to avoid the conflict of similar enum fields.
+  Original enum class:
+      enum class SurfaceColorModeType : unsigned int
+      {
+          BODY_COLOR = 0,
+          MONO_COLOR,
+          ...
+      };
+
+
+=====
+IDEAS
+=====
+
+- We can divide this class (FeatureSurface) into two classes
+  1- Class one: is all early functions in the current class that they compute SeparatedEdges. 
+  2- Class two is using the output of class one (which is SeparatedEdges polydata) and compute Separated Edge Surfaces.
+  These two group of functions in the current code are "independent". 
+  Suggestion for name of classes:
+  1- SeparateFeatureEdges
+  2- FeatureSurfaces
+
+- Member variable: Flip edge color (on/off makes edge color the same/opposite of surface color).

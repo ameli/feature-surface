@@ -62,5 +62,5 @@ doc/*.synctec.gz
 
 *~
 *.log
-TODO
+# TODO
 Notes
