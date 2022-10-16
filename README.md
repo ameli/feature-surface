@@ -6,14 +6,14 @@ This program extracts inlet/outlet surfaces of 3D grids. Grids with any type of 
 
 ## User Guide
 
-Please refer to [user guide page](http://ameli.github.io/feature-surface/), or PDF documentation at [doc/UserGuide.pdf](https://github.com/ameli/feature-surface/raw/main/doc/UserGuide.pdf), or the [wiki](https://github.com/ameli/feature-surface/wiki/Feature-Surface) of the project.
+Please refer to [User Guide page](http://ameli.github.io/feature-surface/), or PDF documentation at [doc/UserGuide.pdf](https://github.com/ameli/feature-surface/raw/main/doc/UserGuide.pdf), or the [wiki](https://github.com/ameli/feature-surface/wiki/Feature-Surface) of the project.
 
 ## ParaView Plugin
 
 In ParaView, from _tools_ menu open _Manage Plugins_. Then load [`bin/libFeatureSurface.so`](https://github.com/ameli/feature-surface/blob/main/bin/libFeatureSurfacePlugin.so?raw=true) file. Next, in _Filters_ menu go to _Extensions_ and apply _Feature Surface_ filter to your pipeline.
 
 ## License
-Its free and open source under GNU/zlib license. Please see [LICENSE.txt](https://raw.github.com/ameli/feature-surface/main/License.txt) for terms.
+Its free and open source under GNU/zlib license. Please see [LICENSE.txt](https://raw.github.com/ameli/feature-surface/main/LICENSE.txt) for terms.
 
 ## Author
 Siavash Ameli  
